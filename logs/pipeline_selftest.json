@@ -1,0 +1,20 @@
+{
+  "l0": {
+    "seed": 42,
+    "n_nodes": 35,
+    "n_edges": 34,
+    "n_queries": 4,
+    "query_ids_sha256": "6d92fc92a757caca",
+    "edges_sha256": "71845d2641ee7505",
+    "negs_sha256": "2349225e5b3368cc"
+  },
+  "weight_fingerprint": "98a40d1b824c3b56",
+  "n_triplets": 20,
+  "dim": 8,
+  "k": 8,
+  "hidden": 64,
+  "loss_paper_total": 5.6112565994262695,
+  "loss_official_total": 2.518259286880493,
+  "backend": "numpy",
+  "note": "投影头前向 + 算子损失 + 排父 + 评测桥；未含框架训练。"
+}

@@ -1,0 +1,30 @@
+{
+  "source": "Jittor BertModel 随机初始化；6 次 get_cls 等价梯度链路（与权重/数据无关）",
+  "vocab": 31116,
+  "seq": 30,
+  "batch": 32,
+  "calls": 6,
+  "steps": 8,
+  "warmup": 2,
+  "seconds": [
+    60.480457487999956,
+    66.87321970499943,
+    73.1577108170004,
+    70.22435657999995,
+    64.69533835500079,
+    67.6266660250003,
+    72.34522349300005,
+    60.69465437400049
+  ],
+  "median_step_s": 67.24994286499987,
+  "eff_gflops": 56.52941605662742,
+  "target_steps": 164,
+  "projected_hours": 3.0636085082944384,
+  "within_2h": false,
+  "within_day": true,
+  "param_max_delta": 1.6689300537109375e-06,
+  "param_finite": true,
+  "grad_finite": true,
+  "grad_chain_ok": true,
+  "note": "opt.backward(loss); opt.step(); jt.sync_all()；训练态 m.train()，绝不 eval()"
+}

@@ -1,0 +1,11 @@
+# WSL 里执行 .sh / .py，必须保持 LF。
+# Windows git 默认 core.autocrlf=true，checkout 会把 LF 转 CRLF，
+# 导致 WSL 执行 `bash run_in_wsl.sh` 报 `\r: command not found`。
+* text=auto eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.png binary
+*.pdf binary
+*.npz binary

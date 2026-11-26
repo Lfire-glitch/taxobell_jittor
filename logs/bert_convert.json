@@ -1,0 +1,14 @@
+{
+  "source": "data/external/bert-base-uncased/model.safetensors",
+  "source_sha256_16": "68d45e234eb4a928",
+  "output": "data/external/bert-base-uncased/bert_jittor.npz",
+  "output_bytes": 437977820,
+  "tensors_in": 206,
+  "tensors_out": 199,
+  "dropped_cls": 7,
+  "missing": 0,
+  "extra": 0,
+  "shape_mismatch": 0,
+  "transposed": 0,
+  "note": "去 bert. 前缀 / gamma,beta→weight,bias / 丢 cls.*；shape 与 hf_loader.build_mapping() 逐项一致，无需转置；pooler.dense.* 已存在，无需补；BertModel 须 vocab_size=30522"
+}

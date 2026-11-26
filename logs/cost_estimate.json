@@ -1,0 +1,501 @@
+{
+  "facts": {
+    "source": "peel_ref/taxobell/src/{main,model,exp,data}.py 逐行核对",
+    "bert_params": 110000000.0,
+    "proj_params": 120000.0,
+    "padmaxlen": 30,
+    "batch_size": 128,
+    "epochs_readme": 50,
+    "epochs_appendix": 125,
+    "accumulation_steps": 1,
+    "negsamples": 50,
+    "method_default": "normal",
+    "drop_last": true,
+    "negs_by_dataset": {
+      "env": 50,
+      "sci": 50,
+      "wordnet": 10,
+      "food": 20,
+      "mesh": 20
+    },
+    "get_cls_calls_normal": 2,
+    "get_cls_calls_gated": 4,
+    "concepts_per_triple": 3,
+    "bert_calls_per_step_normal": 6,
+    "bert_calls_per_step_gated": 12,
+    "optimizer": "AdamW(all named_parameters) → BERT 全参微调",
+    "checkpoint_per_epoch": true,
+    "predict_per_epoch": true,
+    "dataset_edges_est": {
+      "env": 261,
+      "sci": 452,
+      "wordnet": 19500,
+      "food": 1533,
+      "mesh": 10498
+    },
+    "dataset_edges_note": "docs/mainline.md §5；WordNet 20.5/19.5 按千计；待 .pkl 到位核实",
+    "triples_rule": "edges × negsamples；.pkl 的 train_child_parent_negative_parent_triple 已离线展开",
+    "excluded": "每 epoch predict() 推理 + checkpoint I/O 未计入，结果为下界"
+  },
+  "hardware": {
+    "calibrated(25.0G)": 25.03698640977734
+  },
+  "tiers": [
+    {
+      "name": "full_5ds_50ep",
+      "frozen": false,
+      "method": "normal",
+      "edges": 32244,
+      "negs": 50,
+      "batch": 128,
+      "epochs": 50,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 3682,
+      "total_steps": 184100,
+      "flops_per_step": 15206676480000.0,
+      "total_flops": 2.799549139968e+18,
+      "hours": {
+        "calibrated(25.0G)": 31060.14941863428
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 12504.877774120498,
+      "ratio_to_full": 1.0
+    },
+    {
+      "name": "full_5ds_125ep",
+      "frozen": false,
+      "method": "normal",
+      "edges": 32244,
+      "negs": 50,
+      "batch": 128,
+      "epochs": 125,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 3682,
+      "total_steps": 460250,
+      "flops_per_step": 15206676480000.0,
+      "total_flops": 6.99887284992e+18,
+      "hours": {
+        "calibrated(25.0G)": 77650.3735465857
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 31262.194435301244,
+      "ratio_to_full": 2.5
+    },
+    {
+      "name": "env_50ep",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 50,
+      "batch": 128,
+      "epochs": 50,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 102,
+      "total_steps": 5100,
+      "flops_per_step": 15206676480000.0,
+      "total_flops": 7.7554050048e+16,
+      "hours": {
+        "calibrated(25.0G)": 860.4386856873158
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 346.414321825174,
+      "ratio_to_full": 0.027702335687126562
+    },
+    {
+      "name": "env_50ep_batch32",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 50,
+      "batch": 32,
+      "epochs": 50,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 408,
+      "total_steps": 20400,
+      "flops_per_step": 3801669120000.0,
+      "total_flops": 7.7554050048e+16,
+      "hours": {
+        "calibrated(25.0G)": 860.4386856873158
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 470.5341892768087,
+      "ratio_to_full": 0.027702335687126562
+    },
+    {
+      "name": "env_50ep_batch8",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 50,
+      "batch": 8,
+      "epochs": 50,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 1632,
+      "total_steps": 81600,
+      "flops_per_step": 950417280000.0,
+      "total_flops": 7.7554050048e+16,
+      "hours": {
+        "calibrated(25.0G)": 860.4386856873158
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 967.0136590833473,
+      "ratio_to_full": 0.027702335687126562
+    },
+    {
+      "name": "env_5ep_negs10_batch32",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 10,
+      "batch": 32,
+      "epochs": 5,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 82,
+      "total_steps": 410,
+      "flops_per_step": 3801669120000.0,
+      "total_flops": 1558684339200000.0,
+      "hours": {
+        "calibrated(25.0G)": 17.29313044763723
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 9.456814588406449,
+      "ratio_to_full": 0.000556762629005975
+    },
+    {
+      "name": "env_2ep_negs5_batch8",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 5,
+      "batch": 8,
+      "epochs": 2,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 164,
+      "total_steps": 328,
+      "flops_per_step": 950417280000.0,
+      "total_flops": 311736867840000.0,
+      "hours": {
+        "calibrated(25.0G)": 3.4586260895274457
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 3.8870156884722786,
+      "ratio_to_full": 0.000111352525801195
+    },
+    {
+      "name": "probe_1ep_negs5_batch8",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 5,
+      "batch": 8,
+      "epochs": 1,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 164,
+      "total_steps": 164,
+      "flops_per_step": 950417280000.0,
+      "total_flops": 155868433920000.0,
+      "hours": {
+        "calibrated(25.0G)": 1.7293130447637228
+      },
+      "within_budget": {
+        "at_least_one": true,
+        "all": true
+      },
+      "hours_measured": 1.9435078442361393,
+      "ratio_to_full": 5.56762629005975e-05
+    },
+    {
+      "name": "probe_1ep_gated",
+      "frozen": false,
+      "method": "gated",
+      "edges": 261,
+      "negs": 5,
+      "batch": 8,
+      "epochs": 1,
+      "seq": 30,
+      "bert_calls": 12,
+      "steps_per_epoch": 164,
+      "total_steps": 164,
+      "flops_per_step": 1900817280000.0,
+      "total_flops": 311734033920000.0,
+      "hours": {
+        "calibrated(25.0G)": 3.4585946480437495
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      },
+      "hours_measured": 3.8870156884722786,
+      "ratio_to_full": 0.00011135151352391095
+    },
+    {
+      "name": "frozen_cached_cls_20ep",
+      "frozen": true,
+      "method": "normal",
+      "edges": 261,
+      "negs": 5,
+      "batch": 32,
+      "epochs": 20,
+      "seq": 30,
+      "bert_calls": 0,
+      "steps_per_epoch": 41,
+      "total_steps": 820,
+      "flops_per_step": 69120000.0,
+      "total_flops": 56678400000.0,
+      "hours": {
+        "calibrated(25.0G)": 0.0006288296739200097
+      },
+      "within_budget": {
+        "at_least_one": true,
+        "all": true
+      },
+      "hours_measured": 0.0,
+      "ratio_to_full": 2.024554568120489e-08
+    }
+  ],
+  "batch_sweep": [
+    {
+      "name": "batch8",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 10,
+      "batch": 8,
+      "epochs": 5,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 327,
+      "total_steps": 1635,
+      "flops_per_step": 950417280000.0,
+      "total_flops": 1553932252800000.0,
+      "hours": {
+        "calibrated(25.0G)": 17.240407488955405
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      }
+    },
+    {
+      "name": "batch16",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 10,
+      "batch": 16,
+      "epochs": 5,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 164,
+      "total_steps": 820,
+      "flops_per_step": 1900834560000.0,
+      "total_flops": 1558684339200000.0,
+      "hours": {
+        "calibrated(25.0G)": 17.29313044763723
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      }
+    },
+    {
+      "name": "batch32",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 10,
+      "batch": 32,
+      "epochs": 5,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 82,
+      "total_steps": 410,
+      "flops_per_step": 3801669120000.0,
+      "total_flops": 1558684339200000.0,
+      "hours": {
+        "calibrated(25.0G)": 17.29313044763723
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      }
+    },
+    {
+      "name": "batch64",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 10,
+      "batch": 64,
+      "epochs": 5,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 41,
+      "total_steps": 205,
+      "flops_per_step": 7603338240000.0,
+      "total_flops": 1558684339200000.0,
+      "hours": {
+        "calibrated(25.0G)": 17.29313044763723
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      }
+    },
+    {
+      "name": "batch128",
+      "frozen": false,
+      "method": "normal",
+      "edges": 261,
+      "negs": 10,
+      "batch": 128,
+      "epochs": 5,
+      "seq": 30,
+      "bert_calls": 6,
+      "steps_per_epoch": 21,
+      "total_steps": 105,
+      "flops_per_step": 15206676480000.0,
+      "total_flops": 1596701030400000.0,
+      "hours": {
+        "calibrated(25.0G)": 17.714914117091794
+      },
+      "within_budget": {
+        "at_least_one": false,
+        "all": false
+      }
+    }
+  ],
+  "sampling": {
+    "source": "§4.4 hard negatives；官方 .pkl 已离线展开，见 docs/paper_vs_code.md §8",
+    "cases": {
+      "synth": {
+        "n_nodes": 35,
+        "n_edges": 34,
+        "epochs": 50,
+        "sample_once_s": 0.00016724200031603687,
+        "resample_all_s": 0.0030875649999870802,
+        "cached_all_s": 0.00016724200031603687,
+        "resample_over_cache_x": 18.461660313512844,
+        "counts": {
+          "siblings": 40,
+          "uncles": 38,
+          "cousins": 80,
+          "grandparents": 32
+        }
+      },
+      "mesh_scale": {
+        "n_nodes": 10000,
+        "n_edges": 9999,
+        "epochs": 50,
+        "sample_once_s": 0.0605649330000233,
+        "resample_all_s": 3.393219890999717,
+        "cached_all_s": 0.0605649330000233,
+        "resample_over_cache_x": 56.026147853551024,
+        "counts": {
+          "siblings": 9480,
+          "uncles": 9281,
+          "cousins": 8752,
+          "grandparents": 9994
+        }
+      }
+    }
+  },
+  "verdict": {
+    "budget_hours": 2.0,
+    "budget_2h": 2.0,
+    "budget_day_hours": 24.0,
+    "full_hours": {
+      "calibrated(25.0G)": 31060.14941863428
+    },
+    "step_time_model": {
+      "intercept_s": 4.867445782417045,
+      "per_sample_s": 0.28036859620829885,
+      "points": {
+        "2": 5.667749735000143,
+        "4": 5.876422903000275,
+        "8": 6.326640012000098,
+        "16": 10.276657669000087,
+        "32": 13.572611557999153
+      },
+      "max_measured_batch": 32,
+      "note": "t_step≈a+b·batch；实测 batch 上限外为线性外推；6/12 次调用按倍数折"
+    },
+    "basis": "hours_measured（实测 step-time 外推）",
+    "full_feasible_on_cpu": false,
+    "feasible_tiers_2h": [
+      "probe_1ep_negs5_batch8",
+      "frozen_cached_cls_20ep"
+    ],
+    "feasible_tiers_day": [
+      "env_5ep_negs10_batch32",
+      "env_2ep_negs5_batch8",
+      "probe_1ep_negs5_batch8",
+      "probe_1ep_gated",
+      "frozen_cached_cls_20ep"
+    ],
+    "feasible_tiers_at_least_one": [
+      "probe_1ep_negs5_batch8",
+      "frozen_cached_cls_20ep"
+    ],
+    "feasible_tiers_all": [
+      "probe_1ep_negs5_batch8",
+      "frozen_cached_cls_20ep"
+    ],
+    "sampling_feasible": true,
+    "sampling_hours": 0.0009425610808332547,
+    "batch_only_helps_memory": true,
+    "batch_sweep_total_flops": [
+      1553932252800000.0,
+      1558684339200000.0,
+      1558684339200000.0,
+      1558684339200000.0,
+      1596701030400000.0
+    ],
+    "batch_sweep_spread_rel": 0.026785714285714284,
+    "batch_note": "FLOPs 总量近恒定；CPU 实测固定开销 a≈4.75s 占 58~81%，升 batch 摊薄才省时，降 batch 反而每样本更贵",
+    "frozen_ratio": 2.024554568120489e-08,
+    "biggest_lever": "冻结/缓存 [CLS]：BERT 调用 6→0，训练算力仅剩投影头",
+    "second_lever": "epochs / 数据集边数 / negsamples / seq_len 均线性下降",
+    "sampling_is_offline": true,
+    "sampling_note": "官方 .pkl 已展开三元组、__init__ 一次性 tokenize；无每 epoch 重挖",
+    "requires": [
+      "bert-base-uncased HF state_dict→npz（或本地 SciBERT/SPECTER 仅作架构标定）",
+      "≥1 个 processed/taxonomy_data_*.pkl",
+      "tokenizer 词表"
+    ],
+    "excluded": "每 epoch predict() 推理 + checkpoint I/O 未计入，结果为下界",
+    "eff_meta": {
+      "mode": "calibrated",
+      "path": "logs/bert_calibration.json"
+    }
+  }
+}

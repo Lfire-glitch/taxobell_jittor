@@ -1,0 +1,70 @@
+{
+  "source": "train.py --save-weights trained_jittor.npz，WSL 训练后权重",
+  "weight_fingerprint": "c1609258d50f98dc",
+  "results": {
+    "perfect": {
+      "Node_F1": 1.0,
+      "Edge_F1": 1.0,
+      "Ancestor_F1_macro": 1.0,
+      "Ancestor_F1_micro": 1.0,
+      "MR": 1.0,
+      "MRR": 1.0,
+      "R@1": 1.0,
+      "H@1": 1.0,
+      "R@5": 1.0,
+      "H@5": 1.0,
+      "R@10": 1.0,
+      "H@10": 1.0
+    },
+    "broken": {
+      "Node_F1": 1.0,
+      "Edge_F1": 0.9411764705882353,
+      "Ancestor_F1_macro": 0.9873015873015873,
+      "Ancestor_F1_micro": 0.9696969696969697,
+      "MR": 1.5,
+      "MRR": 0.75,
+      "R@1": 0.5,
+      "H@1": 0.5,
+      "R@5": 1.0,
+      "H@5": 1.0,
+      "R@10": 1.0,
+      "H@10": 1.0
+    },
+    "model_BC": {
+      "Node_F1": 1.0,
+      "Edge_F1": 0.8823529411764706,
+      "Ancestor_F1_macro": 0.9047619047619047,
+      "Ancestor_F1_micro": 0.888888888888889,
+      "MR": 2.75,
+      "MRR": 0.425,
+      "R@1": 0.0,
+      "H@1": 0.0,
+      "R@5": 1.0,
+      "H@5": 1.0,
+      "R@10": 1.0,
+      "H@10": 1.0
+    },
+    "model_KL": {
+      "Node_F1": 1.0,
+      "Edge_F1": 0.8823529411764706,
+      "Ancestor_F1_macro": 0.9047619047619047,
+      "Ancestor_F1_micro": 0.888888888888889,
+      "MR": 2.75,
+      "MRR": 0.425,
+      "R@1": 0.0,
+      "H@1": 0.0,
+      "R@5": 1.0,
+      "H@5": 1.0,
+      "R@10": 1.0,
+      "H@10": 1.0
+    }
+  },
+  "mode_separability": {
+    "bc_gap": 5.364418029785156e-07,
+    "kl_gap": 1.9548110961914062,
+    "separable": true
+  },
+  "model_mode_disagreements": 1,
+  "ok": true,
+  "note": "perfect/broken 为评测桥自检基线（非模型产出）；model_* 来自 rank_anchors；Wu&P 未纳入"
+}

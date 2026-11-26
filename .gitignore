@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.tmp-print/
+preprocess_work/
+.DS_Store
+*.swp
+
+# 大文件不入库：BERT 原始权重（保留小文件转换产物说明见 README）
+data/external/
+# 官方原始数据（可由出处重新获取）
+data/official_drive/
+
+# logs 只推 json 证据，二进制快照不入库
+logs/*
+!logs/*.json
+*.npz
+*.npy
+*.pt
+checkpoints/
+
+# pkl：只推 processed 官方等价 pkl 与本地替代 pkl
+*.pkl
+!data/*/processed/*.pkl
+!data/local/*.pkl
+
+# 图片 / PDF 资产不入库
+*.pdf
+*.png
+*.svg
+figs/
+
+# PPT 资产管线与 WSL 同步工具不入库（目录页口径）
+scripts/fill_assets.py
+scripts/build_flowchart.mjs
+scripts/export_pdf.mjs
+run_diagnose.sh
+run_in_wsl.sh
+sync_to_wsl.sh
+
+# docs 只留 mainline.md
+docs/*
+!docs/mainline.md

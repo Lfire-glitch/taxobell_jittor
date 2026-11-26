@@ -1,0 +1,101 @@
+{
+  "npz": "/home/guo76/taxobell_jittor/logs/parity_input.npz",
+  "checks": {
+    "F_params": {
+      "n_param_list": 6,
+      "n_parameters": 6,
+      "stop_grad": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "weight_fingerprint": "98a40d1b824c3b56"
+    },
+    "A_forward_total": 5.611257076263428,
+    "A_forward_parts": {
+      "L_sym": 5.103946208953857,
+      "L_align": 0.48878222703933716,
+      "L_diverge": 0.06176244467496872,
+      "L_asym": 0.5073109865188599,
+      "L_reg": 0.0,
+      "L_clip": 0.0
+    },
+    "B_total_before_step": 5.611257076263428,
+    "C_grads": [
+      {
+        "max_abs": 0.8208104372024536,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.5985051989555359,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.17491456866264343,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 8.940696716308594e-08,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.43470293283462524,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.15368875861167908,
+        "has_nan": false,
+        "has_inf": false
+      }
+    ],
+    "D_param_delta": [
+      {
+        "max_abs": 0.0010000020265579224,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.0010000001639127731,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.0010000020265579224,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.0008994034142233431,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.0010000020265579224,
+        "has_nan": false,
+        "has_inf": false
+      },
+      {
+        "max_abs": 0.0009999999310821295,
+        "has_nan": false,
+        "has_inf": false
+      }
+    ],
+    "E_total_after_step_same_graph": 5.611257076263428,
+    "E_total_after_step_new_graph": 5.503117084503174,
+    "G_train_step_curve": [
+      5.611258506774902,
+      5.50311803817749,
+      5.399356842041016,
+      5.29965353012085,
+      5.203157424926758
+    ]
+  }
+}

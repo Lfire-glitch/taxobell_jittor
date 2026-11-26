@@ -1,0 +1,9 @@
+{
+  "seed": 42,
+  "n_nodes": 35,
+  "n_edges": 34,
+  "n_queries": 4,
+  "query_ids_sha256": "6d92fc92a757caca",
+  "edges_sha256": "71845d2641ee7505",
+  "negs_sha256": "2349225e5b3368cc"
+}

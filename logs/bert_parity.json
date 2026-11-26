@@ -1,0 +1,25 @@
+{
+  "n": 6,
+  "max_len": 64,
+  "hf_layers": 12,
+  "cls": {
+    "cos_mean": 0.9999999999993258,
+    "cos_min": 0.9999999999991039,
+    "max_abs_delta": 6.198883056640625e-06,
+    "shape": [
+      6,
+      768
+    ]
+  },
+  "pooler": {
+    "cos_mean": 0.9999999999998105,
+    "cos_min": 0.9999999999993432,
+    "max_abs_delta": 2.5331974029541016e-06,
+    "shape": [
+      6,
+      768
+    ]
+  },
+  "ok": true,
+  "note": "两框架装同一 bert_jittor.npz（199 键 strict 对齐 HF BertModel.state_dict），同一 tokenizer 输入；判据 cos>=0.999 沿用旧仓 03_m1_align.py 口径"
+}

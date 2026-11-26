@@ -1,0 +1,35 @@
+{
+  "source": "§4.4 hard negatives；官方 .pkl 已离线展开，见 docs/paper_vs_code.md §8",
+  "cases": {
+    "synth": {
+      "n_nodes": 35,
+      "n_edges": 34,
+      "epochs": 50,
+      "sample_once_s": 0.00016724200031603687,
+      "resample_all_s": 0.0030875649999870802,
+      "cached_all_s": 0.00016724200031603687,
+      "resample_over_cache_x": 18.461660313512844,
+      "counts": {
+        "siblings": 40,
+        "uncles": 38,
+        "cousins": 80,
+        "grandparents": 32
+      }
+    },
+    "mesh_scale": {
+      "n_nodes": 10000,
+      "n_edges": 9999,
+      "epochs": 50,
+      "sample_once_s": 0.0605649330000233,
+      "resample_all_s": 3.393219890999717,
+      "cached_all_s": 0.0605649330000233,
+      "resample_over_cache_x": 56.026147853551024,
+      "counts": {
+        "siblings": 9480,
+        "uncles": 9281,
+        "cousins": 8752,
+        "grandparents": 9994
+      }
+    }
+  }
+}

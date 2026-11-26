@@ -1,0 +1,75 @@
+{
+  "mode": "dry_run",
+  "finetune_bert": true,
+  "loss": "paper",
+  "steps": 2,
+  "lr": 0.001,
+  "batch": 2,
+  "seq_len": 32,
+  "proj_in_dim": 768,
+  "proj_dim": 8,
+  "hidden": 64,
+  "vocab_size": 30522,
+  "seed": 42,
+  "n_nodes": 35,
+  "n_triples": 20,
+  "n_optimizer_params": 205,
+  "weight_fingerprint_init": "94c27bfd0c164707",
+  "weight_fingerprint_trained": "82286cbdf690fea2",
+  "total": [
+    5.075264930725098,
+    2.349090099334717
+  ],
+  "first": {
+    "L_sym": 4.455250263214111,
+    "L_align": 0.5206656455993652,
+    "L_diverge": 0.31619763374328613,
+    "L_asym": 0.61552494764328,
+    "L_reg": 0.0044899205677211285,
+    "L_clip": 0.0,
+    "total": 5.075264930725098
+  },
+  "last": {
+    "L_sym": 2.0589773654937744,
+    "L_align": 0.268099308013916,
+    "L_diverge": 0.0,
+    "L_asym": 0.268099308013916,
+    "L_reg": 0.022013457491993904,
+    "L_clip": 0.0,
+    "total": 2.349090099334717
+  },
+  "finite": true,
+  "encode_s": 9.552779171000111,
+  "train_s": 9.101001641000039,
+  "per_step_s": 4.5505008205000195,
+  "save_weights": "logs/b_e2e_dry_run_ft2.npz",
+  "evaluation": {
+    "BC": {
+      "Node_F1": 1.0,
+      "Edge_F1": 0.8823529411764706,
+      "Ancestor_F1_macro": 0.9047619047619047,
+      "MR": 3.0,
+      "MRR": 0.35416666666666663,
+      "R@1": 0.0,
+      "H@1": 0.0,
+      "R@5": 1.0,
+      "H@5": 1.0,
+      "R@10": 1.0,
+      "H@10": 1.0
+    },
+    "KL": {
+      "Node_F1": 1.0,
+      "Edge_F1": 0.8823529411764706,
+      "Ancestor_F1_macro": 0.9047619047619047,
+      "MR": 3.0,
+      "MRR": 0.35416666666666663,
+      "R@1": 0.0,
+      "H@1": 0.0,
+      "R@5": 1.0,
+      "H@5": 1.0,
+      "R@10": 1.0,
+      "H@10": 1.0
+    }
+  },
+  "note": "dry_run 用合成树；pkl 分支按官方 datasets.py 口径解析（ID 三元组 + id2context，候选池 = concept_set − test，多父 gold 取首个，边取 child_parent_pair）。冻结模式只训投影头，微调模式含 BERT 全参；均非论文 5ds×50ep，不比论文绝对分数；本地替代 pkl 是真实概念名+人工定义，非官方数据；multiparent pkl 的 path2root 为空，Ancestor F1 用训练边近似。"
+}

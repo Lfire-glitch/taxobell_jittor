@@ -1,0 +1,107 @@
+{
+  "_comment": "降级口径配置。论文绝对值不复刻，只要求自建 Jittor 与自建 PyTorch 指标对齐；绝对值只比序关系不比数值。",
+  "seed": 42,
+  "backend": {
+    "float": "float32",
+    "jittor_version_target": "1.3.11.0",
+    "torch_version_target": "2.15.0+cpu",
+    "reason": "jt.array(float64) 强制降 float32；matmul 仅支持 float32；混 float64 常量编译失败。"
+  },
+  "numerics": {
+    "_comment": "2026-11-25 WSL 实跑定位：float32 下 1.0+1e-12==1.0，旧 D_EPS 保护被 Jittor 常量折叠吞掉导致 log(0)=-inf。三后端必须同步同一口径，改 EPS/clamp 后重跑 L3。",
+    "clamp_eps": 0.0001,
+    "log_guard": "_safe_log_arg(x)=relu(x-CLAMP_EPS)+CLAMP_EPS",
+    "backends": ["src/ops_numpy.py", "src/ops_torch.py", "src/ops_jittor.py"],
+    "regression_gate": "scripts/selfcheck_numeric.py（10/10 PASS，含三后端源码一致性断言）"
+  },
+  "degrade": {
+    "dataset": "synth",
+    "dataset_note": "官方 5 数据集在 Google Drive；到位前用 src/synth.py 的确定性合成树跑通全链路。",
+    "encoder": "cached_npy",
+    "encoder_frozen": true,
+    "encoder_note": "官方端到端微调 bert-base-uncased（125 epochs / 48GB A6000）。降级为冻结并预导出 [CLS] .npy，训练只更新投影头。",
+    "encoder_jittor": "src/encoder_jittor.py 可复用 WSL 旧仓库实测的纯 Jittor BERT-base 做冻结前向；旧仓库权重是 SciBERT/SPECTER，正式复现须换 bert-base-uncased。默认仍走 cached n_*，见 docs/jittor_vs_pytorch.md 第 5 节。",
+    "epochs": 20,
+    "batch_size": 32,
+    "dim": 8,
+    "negs_per_query": 5,
+    "loss": "paper",
+    "loss_note": "paper=论文式 7-13（无权重）；official=官方 model.py::forward（0.45/0.45/0.1）。两套都要跑并在报告里注明选哪套，见 docs/paper_vs_code.md。"
+  },
+  "paper_reference": {
+    "epochs_readme": 50,
+    "epochs_appendix": 125,
+    "batch_size": 128,
+    "lr_bert": 9e-05,
+    "lr_proj": 0.001,
+    "hidden": 64,
+    "dropout_main_py": 0.4,
+    "dropout_appendix": 0.2,
+    "C": 1.5,
+    "lam_main_py": 0.1,
+    "lam_appendix": 0.3,
+    "margin_hardcoded": 0.5,
+    "wtbce": 0.45,
+    "wtkl": 0.45,
+    "wtreg": 0.1,
+    "gpu": "48GB A6000"
+  },
+  "cost_model": {
+    "_comment": "scripts/estimate_cost.py 的参数来源；官方源码逐行实证见 docs/paper_vs_code.md §8",
+    "budget_cpu_hours": 2.0,
+    "budget_day_hours": 24.0,
+    "eff_gflops_assumed": {"conservative": 5.0, "optimistic": 30.0},
+    "eff_gflops_measured": 25.04,
+    "eff_note": "WSL 19:16 补测 logs/bert_calibration.json：batch2/4/8/16/32=6.99/13.48/25.04/30.83/46.68G；单步 5.67/5.88/6.33/10.28/13.57s；--calibrate-json 回填",
+    "step_time_model": "t_step≈a+b·batch（a=4.87s 固定，b=0.280s/样本）；实测 batch≤32，更大为线性外推",
+    "bert_calls_per_step": {"normal": 6, "gated": 12, "frozen_cached": 0},
+    "padmaxlen": 30,
+    "batch_size": 128,
+    "drop_last": true,
+    "negs_by_dataset": {"env": 50, "sci": 50, "wordnet": 10, "food": 20, "mesh": 20},
+    "feasible_tiers_2h": ["probe_1ep_negs5_batch8", "frozen_cached_cls_20ep"],
+    "feasible_tiers_day": ["env_5ep_negs10_batch32", "env_2ep_negs5_batch8", "probe_1ep_negs5_batch8", "probe_1ep_gated", "frozen_cached_cls_20ep"],
+    "feasible_note": "19:16 补测 batch≤32 后重算：probe 档实测外推 1.94h 已进 2h（19:02 的 2.19h 作废）；24h 内 5 档可跑，全量/50ep 仍不可",
+    "batch_only_helps_memory": true,
+    "batch_only_helps_memory_scope": "仅指 FLOPs 总量近恒定；CPU 真实耗时受固定开销主导，见 batch_note",
+    "batch_note": "CPU 固定开销 a≈4.87s + b≈0.280s/样本（实测至 batch32）；降 batch 每样本更贵，升 batch 摊薄才省时",
+    "sampling_is_offline": true,
+    "requires": ["bert-base-uncased 权重", "≥1 个 processed .pkl", "tokenizer"],
+    "excluded_from_flops": ["每 epoch predict() 推理", "checkpoint I/O"]
+  },
+  "parity": {
+    "_comment": "判据单一来源：scripts/parity.py 与 scripts/train.py 都从本段读 tol，不再硬编码；改判据只改这里。",
+    "l0": "fingerprint JSON 全字段逐字一致",
+    "l3_max_abs_delta": 1e-06,
+    "l2_rel_loss_tol": 0.001,
+    "l2_steps": 20,
+    "l2_steps_note": "steps<=20 为门禁（PASS/FAIL）；超过则标 DRIFT 只观测累积漂移，不作失败判据。",
+    "rng_policy": "所有随机只走 random.Random / np.default_rng；导出 .npz 供两端读同一份，禁止框架 RNG 参与初始化与负采样。"
+  },
+  "anchors": {
+    "external": "PEEL wiki_ol_probe.pt（0.4MB 作者 checkpoint）",
+    "external_scope": "方法论级：只证明『本仓库具备推理等价能力』。wiki-ol 与 TaxoBell 五数据集不同域，不能当数值锚点。",
+    "internal": "自建 PyTorch 与 Jittor 同起点重训逐 step 对齐",
+    "eval_bridge": "SPARROW eval.py 的 Node/Edge/Ancestor F1（纯 Python，无 LLM）"
+  },
+  "jittor_paradigm": {
+    "_comment": "2026-11-25 按 WSL 旧仓库实测代码修正，勿再写成 opt.step(loss)",
+    "backward": "opt.backward(loss)",
+    "step": "opt.step()",
+    "cpu": "jt.flags.use_cuda=0",
+    "train_state": "model.train()，训练态绝不 eval()",
+    "params": "显式 param_list() 交给 optimizer，不依赖裸 jt.array 自动收集",
+    "source": "specter-jittor/scripts/11_train_margin.py:58-60 / 16_train_fmt.py:88-91 / topic-agenda-concept-repro/scripts/10_train_prompt_encoder.py:179-180"
+  },
+  "eval": {
+    "ancestor_f1_mode": "macro",
+    "note": "macro 与 micro 都实现，报告只选一种并固定；多父数据集需先定 DAG→树口径。"
+  },
+  "must_not": [
+    "不装包、不建/删 conda 环境、不改系统配置（由用户本人在 WSL 决定）",
+    "训练态绝不调 model.eval()（Jittor 会 stop_grad 全部参数）",
+    "不改已定稿的 slides.tex 与旧 specter-jittor 项目任何文件",
+    "不把 PEEL checkpoint 当 TaxoBell 数值锚点",
+    "不声称复现了论文绝对分数"
+  ]
+}
